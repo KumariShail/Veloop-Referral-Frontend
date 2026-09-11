@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
-import { referralInfo } from '../../utils/dummyData';
+import { getMyReferralData } from '../../utils/api';
 import ConfettiBurst from '../common/ConfettiBurst';
 import Toast from '../common/Toast';
 import styles from './ReferralCard.module.css';
@@ -10,6 +10,28 @@ function ReferralCard() {
   const [copiedField, setCopiedField] = useState(null);
   const [burstId, setBurstId] = useState(0);
   const [toast, setToast] = useState({ show: false, message: '' });
+  const [referralInfo, setReferralInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+    useEffect(() => {
+    async function loadReferralData() {
+      try {
+        const data = await getMyReferralData();
+
+        setReferralInfo({
+          code: data.referralCode,
+          link: data.referralLink,
+        });
+      } catch (err) {
+        console.error(err);
+        setError('Unable to load referral data');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadReferralData();
+  }, []);
 
   const handleCopy = async (text, field, label) => {
     try {
@@ -23,6 +45,13 @@ function ReferralCard() {
       console.error('Copy failed', err);
     }
   };
+    if (loading) {
+    return <div className={styles.card}>Loading referral data...</div>;
+  }
+
+  if (error) {
+    return <div className={styles.card}>{error}</div>;
+  }
 
   return (
     <motion.div

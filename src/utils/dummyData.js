@@ -21,43 +21,6 @@ export const statistics = [
   { id: 'gems', label: 'Total Gems Earned', value: 40 },
 ];
 
-export const rewards = [
-  {
-    id: 'r1',
-    title: '5000 SVE',
-    subtitle: '≈ ₹10',
-    condition: 'Friend completes 15 Ad Watch tasks',
-    requiredTasks: 15,
-  },
-  {
-    id: 'r2',
-    title: '2 Lucky Spins',
-    subtitle: null,
-    condition: 'Friend completes 20 Ad Watch tasks',
-    requiredTasks: 20,
-  },
-  {
-    id: 'r3',
-    title: '5000 Tokens',
-    subtitle: null,
-    condition: 'Friend completes 30 Ad Watch tasks',
-    requiredTasks: 30,
-  },
-  {
-    id: 'r4',
-    title: '10 Gems',
-    subtitle: null,
-    condition: 'Friend completes 35 Ad Watch tasks',
-    requiredTasks: 35,
-  },
-  {
-    id: 'r5',
-    title: '+20 XP',
-    subtitle: null,
-    condition: 'Awarded for every successful referral',
-    requiredTasks: 0,
-  },
-];
 
 export const referralRules = [
   'Rewards are unlocked only after the referred user completes the required number of Ad Watch tasks.',

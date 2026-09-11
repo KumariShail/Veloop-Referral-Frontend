@@ -1,23 +1,61 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Target, Megaphone } from 'lucide-react';
-import { referralInfo, rewards } from '../../utils/dummyData';
+import { getMyReferralData } from '../../utils/api';
 import styles from './ReferralProgress.module.css';
 import CoinScatterBackground from '../common/CoinScatterBackground';
 
-function getNextMilestone(current) {
-  const upcoming = rewards
-    .filter((r) => r.requiredTasks > 0)
-    .sort((a, b) => a.requiredTasks - b.requiredTasks)
-    .find((r) => r.requiredTasks > current);
-  return upcoming || rewards[rewards.length - 1];
-}
-
 function ReferralProgress() {
-  const current = referralInfo.totalReferrals;
-  const nextMilestone = getNextMilestone(current);
-  const target = nextMilestone.requiredTasks || current;
-  const percent = Math.min(100, Math.round((current / target) * 100));
-  const remaining = Math.max(0, target - current);
+  const [progress, setProgress] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadReferralProgress() {
+      try {
+        const data = await getMyReferralData();
+
+        setProgress(data.referralProgress);
+      } catch (err) {
+        console.error(err);
+        setError('Unable to load referral progress');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadReferralProgress();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.panel}>
+        Loading referral progress...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.panel}>
+        {error}
+      </div>
+    );
+  }
+
+  if (!progress) {
+    return (
+      <div className={styles.panel}>
+        Referral progress is not available.
+      </div>
+    );
+  }
+
+  const current = progress.current;
+  const target = progress.target;
+  const remaining = progress.remaining;
+  const percent = progress.percent;
+  const rewardTitle = progress.nextReward;
 
   return (
     <motion.div
@@ -41,6 +79,7 @@ function ReferralProgress() {
         aria-hidden="true"
       >
         <Megaphone size={22} />
+
         <motion.span
           className={styles.pulseRing}
           animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
@@ -58,11 +97,13 @@ function ReferralProgress() {
           <div className={styles.iconBadge}>
             <Target size={20} />
           </div>
+
           <div>
             <h3 className={styles.title}>Next Milestone</h3>
+
             <p className={styles.subtitle}>
               {remaining > 0
-                ? `${remaining} more referrals to unlock ${nextMilestone.title}`
+                ? `${remaining} more Ad Watch tasks to unlock ${rewardTitle}`
                 : 'Milestone reached!'}
             </p>
           </div>
@@ -70,7 +111,7 @@ function ReferralProgress() {
 
         <div className={styles.rewardChip}>
           <Trophy size={16} />
-          <span>{nextMilestone.title}</span>
+          <span>{rewardTitle}</span>
         </div>
       </div>
 
@@ -80,22 +121,37 @@ function ReferralProgress() {
           initial={{ width: 0 }}
           whileInView={{ width: `${percent}%` }}
           viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: 'easeOut', delay: 0.2 }}
+          transition={{
+            duration: 1.2,
+            ease: 'easeOut',
+            delay: 0.2,
+          }}
         />
+
         <motion.div
           className={styles.barGlowDot}
           initial={{ left: '0%', opacity: 0 }}
-          whileInView={{ left: `${percent}%`, opacity: 1 }}
+          whileInView={{
+            left: `${percent}%`,
+            opacity: 1,
+          }}
           viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: 'easeOut', delay: 0.2 }}
+          transition={{
+            duration: 1.2,
+            ease: 'easeOut',
+            delay: 0.2,
+          }}
         />
       </div>
 
       <div className={styles.bottom}>
         <span className={styles.countLabel}>
-          <strong>{current}</strong> / {target} referrals
+          <strong>{current}</strong> / {target} Ad Watch tasks
         </span>
-        <span className={styles.percentLabel}>{percent}%</span>
+
+        <span className={styles.percentLabel}>
+          {percent}%
+        </span>
       </div>
     </motion.div>
   );

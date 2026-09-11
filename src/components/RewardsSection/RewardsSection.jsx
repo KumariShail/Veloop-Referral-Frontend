@@ -1,24 +1,33 @@
-import { useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Lock, CheckCircle2, Sparkles } from 'lucide-react';
-import { rewards, referralInfo } from '../../utils/dummyData';
+import { getMyReferralData } from '../../utils/api';
 import FloatingOrbs from '../common/FloatingOrbs';
 import styles from './RewardsSection.module.css';
 import CoinScatterBackground from '../common/CoinScatterBackground';
 
-function TiltCard({ reward, index, unlocked }) {
+function TiltCard({ reward, index, current }) {
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
   const springConfig = { stiffness: 150, damping: 18 };
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), springConfig);
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), springConfig);
+
+  const rotateX = useSpring(
+    useTransform(y, [-0.5, 0.5], [10, -10]),
+    springConfig
+  );
+
+  const rotateY = useSpring(
+    useTransform(x, [-0.5, 0.5], [-10, 10]),
+    springConfig
+  );
 
   const handleMouseMove = (e) => {
     const rect = ref.current.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
+
     x.set(px);
     y.set(py);
   };
@@ -28,11 +37,25 @@ function TiltCard({ reward, index, unlocked }) {
     y.set(0);
   };
 
+  const unlocked =
+    reward.requiredTasks === 0 || current >= reward.requiredTasks;
+
+  const remaining = Math.max(
+    reward.requiredTasks - current,
+    0
+  );
+
   return (
     <motion.div
       ref={ref}
-      className={`${styles.card} ${unlocked ? styles.unlocked : styles.locked}`}
-      style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+      className={`${styles.card} ${
+        unlocked ? styles.unlocked : styles.locked
+      }`}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: 'preserve-3d',
+      }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 30 }}
@@ -40,21 +63,53 @@ function TiltCard({ reward, index, unlocked }) {
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      <div className={styles.cardInner} style={{ transform: 'translateZ(30px)' }}>
+      <div
+        className={styles.cardInner}
+        style={{ transform: 'translateZ(30px)' }}
+      >
         <div className={styles.statusIcon}>
-          {unlocked ? <CheckCircle2 size={18} /> : <Lock size={16} />}
+          {unlocked ? (
+            <CheckCircle2 size={18} />
+          ) : (
+            <Lock size={16} />
+          )}
         </div>
 
         <div className={styles.sparkleIcon}>
           <Sparkles size={26} />
         </div>
 
-        <h3 className={styles.rewardTitle}>{reward.title}</h3>
-        {reward.subtitle && <p className={styles.rewardSubtitle}>{reward.subtitle}</p>}
+        <h3 className={styles.rewardTitle}>
+          {reward.title}
+        </h3>
 
-        <p className={styles.condition}>{reward.condition}</p>
+        {reward.subtitle && (
+          <p className={styles.rewardSubtitle}>
+            {reward.subtitle}
+          </p>
+        )}
 
-        {unlocked && <div className={styles.unlockedBadge}>Unlocked</div>}
+        <p className={styles.condition}>
+          {reward.condition}
+        </p>
+
+        {unlocked ? (
+          <div className={styles.unlockedBadge}>
+            Unlocked
+          </div>
+        ) : (
+          <>
+            <div className={styles.lockedProgress}>
+              {remaining} more Ad Watch tasks to unlock
+            </div>
+
+            {reward.requiredTasks > 0 && (
+              <div className={styles.taskCount}>
+                {current} / {reward.requiredTasks} Ad Watch tasks
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       <div className={styles.shine} />
@@ -63,7 +118,44 @@ function TiltCard({ reward, index, unlocked }) {
 }
 
 function RewardsSection() {
-  const current = referralInfo.totalReferrals;
+  const [rewards, setRewards] = useState([]);
+  const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadRewards() {
+      try {
+        const data = await getMyReferralData();
+
+        setRewards(data.rewards || []);
+        setCurrent(data.referralProgress?.current || 0);
+      } catch (err) {
+        console.error(err);
+        setError('Unable to load referral rewards');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadRewards();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.panel}>
+        Loading referral rewards...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.panel}>
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className={styles.panel}>
@@ -77,15 +169,24 @@ function RewardsSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className={styles.title}>Referral Rewards</h2>
-        <p className={styles.subtitle}>Unlock exciting rewards as your friends complete tasks</p>
+        <h2 className={styles.title}>
+          Referral Rewards
+        </h2>
+
+        <p className={styles.subtitle}>
+          Unlock exciting rewards as your friends complete tasks
+        </p>
       </motion.div>
 
       <div className={styles.grid}>
-        {rewards.map((reward, i) => {
-          const unlocked = reward.requiredTasks === 0 || current >= reward.requiredTasks;
-          return <TiltCard key={reward.id} reward={reward} index={i} unlocked={unlocked} />;
-        })}
+        {rewards.map((reward, i) => (
+          <TiltCard
+            key={reward.id}
+            reward={reward}
+            index={i}
+            current={current}
+          />
+        ))}
       </div>
     </div>
   );

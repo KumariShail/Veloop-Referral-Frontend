@@ -1,17 +1,53 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { UserPlus, Trophy } from 'lucide-react';
-import { rewards, referralInfo } from '../../utils/dummyData';
+import { getMyReferralData } from '../../utils/api';
 import FloatingOrbs from '../common/FloatingOrbs';
 import CoinScatterBackground from '../common/CoinScatterBackground';
 import styles from './RewardTimeline.module.css';
 
 function RewardTimeline() {
-  const current = referralInfo.totalReferrals;
+  const [current, setCurrent] = useState(0);
+  const [rewards, setRewards] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const milestoneRewards = rewards.filter((r) => r.requiredTasks > 0);
+  useEffect(() => {
+    async function loadRewardTimeline() {
+      try {
+        const data = await getMyReferralData();
+
+        setCurrent(data.referralProgress?.current || 0);
+        setRewards(data.rewards || []);
+      } catch (error) {
+        console.error('Failed to load reward timeline:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadRewardTimeline();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.panel}>
+        Loading reward journey...
+      </div>
+    );
+  }
+
+  const milestoneRewards = rewards.filter(
+    (r) => r.requiredTasks > 0
+  );
 
   const steps = [
-    { id: 'start', title: 'Registration', desc: 'You joined the referral program', achieved: true, isStart: true },
+    {
+      id: 'start',
+      title: 'Registration',
+      desc: 'You joined the referral program',
+      achieved: true,
+      isStart: true,
+    },
     ...milestoneRewards.map((r) => ({
       id: r.id,
       title: r.title,
@@ -33,16 +69,22 @@ function RewardTimeline() {
         transition={{ duration: 0.5 }}
       >
         <h2 className={styles.title}>Your Reward Journey</h2>
-        <p className={styles.subtitle}>Every referral brings you closer to the next reward</p>
+        <p className={styles.subtitle}>
+          Every referral brings you closer to the next reward
+        </p>
       </motion.div>
 
       <div className={styles.timeline}>
         <div className={styles.trackBg} />
+
         <motion.div
           className={styles.trackFill}
           initial={{ scaleY: 0 }}
           whileInView={{
-            scaleY: steps.filter((s) => s.achieved).length / steps.length,
+            scaleY:
+              steps.length > 0
+                ? steps.filter((s) => s.achieved).length / steps.length
+                : 0,
           }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 1.2, ease: 'easeOut' }}
@@ -58,9 +100,18 @@ function RewardTimeline() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: i * 0.12 }}
           >
-            <div className={`${styles.node} ${step.achieved ? styles.nodeAchieved : ''}`}>
-              {step.isStart ? <UserPlus size={16} /> : <Trophy size={16} />}
+            <div
+              className={`${styles.node} ${
+                step.achieved ? styles.nodeAchieved : ''
+              }`}
+            >
+              {step.isStart ? (
+                <UserPlus size={16} />
+              ) : (
+                <Trophy size={16} />
+              )}
             </div>
+
             <div className={styles.content}>
               <h4 className={styles.stepTitle}>{step.title}</h4>
               <p className={styles.stepDesc}>{step.desc}</p>
