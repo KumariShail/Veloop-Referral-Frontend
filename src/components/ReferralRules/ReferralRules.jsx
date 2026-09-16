@@ -75,7 +75,10 @@ function FloatingBadges() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: [0, -14, 0] }}
           transition={{
-            opacity: { duration: 0.8, delay: b.delay },
+            opacity: {
+              duration: 0.8,
+              delay: b.delay,
+            },
             y: {
               duration: b.duration,
               repeat: Infinity,
@@ -139,9 +142,18 @@ function ReferralRules() {
               key={i}
               className={styles.card}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.45, delay: i * 0.08 }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                margin: '-50px',
+              }}
+              transition={{
+                duration: 0.45,
+                delay: i * 0.08,
+              }}
               whileHover={{ y: -8 }}
             >
               <div

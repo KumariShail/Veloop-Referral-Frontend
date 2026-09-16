@@ -14,13 +14,23 @@ function FAQItem({ item, isOpen, onToggle }) {
         onClick={onToggle}
         aria-expanded={isOpen}
       >
-        <span>{item.question}</span>
+        <span
+          style={{
+            fontSize: '26px',
+            fontWeight: 800,
+            lineHeight: 1.5,
+            color: '#FFFFFF',
+          }}
+        >
+          {item.question}
+        </span>
+
         <motion.span
           className={styles.chevron}
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3 }}
         >
-          <ChevronDown size={18} />
+          <ChevronDown size={26} />
         </motion.span>
       </button>
 
@@ -30,10 +40,23 @@ function FAQItem({ item, isOpen, onToggle }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            transition={{
+              duration: 0.3,
+              ease: 'easeInOut',
+            }}
             className={styles.answerWrap}
           >
-            <p className={styles.answer}>{item.answer}</p>
+            <p
+              className={styles.answer}
+              style={{
+                fontSize: '23px',
+                fontWeight: 600,
+                lineHeight: 1.7,
+                color: '#FFFFFF',
+              }}
+            >
+              {item.answer}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -63,8 +86,21 @@ function FAQ() {
         <div className={styles.headerIcon}>
           <HelpCircle size={22} />
         </div>
-        <h2 className={styles.title}>Frequently Asked Questions</h2>
-        <p className={styles.subtitle}>Everything you need to know about the referral program</p>
+
+        <h2 className={styles.title}>
+          Frequently Asked Questions
+        </h2>
+
+        <p
+          className={styles.subtitle}
+          style={{
+            fontSize: '26px',
+            fontWeight: 700,
+            lineHeight: 1.5,
+          }}
+        >
+          Everything you need to know about the referral program
+        </p>
       </motion.div>
 
       <div className={styles.list}>
