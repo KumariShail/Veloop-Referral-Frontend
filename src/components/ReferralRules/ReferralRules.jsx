@@ -10,9 +10,8 @@ import {
 
 import { referralRules } from '../../utils/dummyData';
 import FloatingOrbs from '../common/FloatingOrbs';
-import CoinScatterBackground from '../common/CoinScatterBackground';
-
 import styles from './ReferralRules.module.css';
+import CoinScatterBackground from '../common/CoinScatterBackground';
 
 const RULE_ICONS = [
   Lock,
@@ -54,38 +53,10 @@ function CrossBadge() {
 }
 
 const FLOATING_BADGES = [
-  {
-    type: 'check',
-    top: '8%',
-    left: '4%',
-    size: 42,
-    delay: 0.2,
-    duration: 4.5,
-  },
-  {
-    type: 'cross',
-    top: '12%',
-    left: '92%',
-    size: 38,
-    delay: 0.5,
-    duration: 5,
-  },
-  {
-    type: 'check',
-    top: '55%',
-    left: '96%',
-    size: 34,
-    delay: 0.4,
-    duration: 4.8,
-  },
-  {
-    type: 'cross',
-    top: '85%',
-    left: '3%',
-    size: 40,
-    delay: 0.7,
-    duration: 5.2,
-  },
+  { type: 'check', top: '8%', left: '4%', size: 42, delay: 0.2, duration: 4.5 },
+  { type: 'cross', top: '12%', left: '92%', size: 38, delay: 0.5, duration: 5 },
+  { type: 'check', top: '55%', left: '96%', size: 34, delay: 0.4, duration: 4.8 },
+  { type: 'cross', top: '85%', left: '3%', size: 40, delay: 0.7, duration: 5.2 },
 ];
 
 function FloatingBadges() {
@@ -102,15 +73,9 @@ function FloatingBadges() {
             height: b.size,
           }}
           initial={{ opacity: 0 }}
-          animate={{
-            opacity: 1,
-            y: [0, -14, 0],
-          }}
+          animate={{ opacity: 1, y: [0, -14, 0] }}
           transition={{
-            opacity: {
-              duration: 0.8,
-              delay: b.delay,
-            },
+            opacity: { duration: 0.8, delay: b.delay },
             y: {
               duration: b.duration,
               repeat: Infinity,
@@ -128,18 +93,11 @@ function FloatingBadges() {
 
 function ReferralRules() {
   return (
-    <div
-      className={styles.panel}
-      style={{
-        border: '8px solid #00D9B5',
-        boxShadow: '0 0 60px rgba(0, 217, 181, 0.8)',
-      }}
-    >
+    <div className={styles.panel}>
       <CoinScatterBackground />
       <FloatingOrbs />
       <FloatingBadges />
 
-      {/* HUGE HEADER */}
       <motion.div
         className={styles.header}
         initial={{ opacity: 0, y: 16 }}
@@ -148,33 +106,30 @@ function ReferralRules() {
         transition={{ duration: 0.5 }}
       >
         <h2
+          className={styles.title}
           style={{
-            fontSize: '120px',
-            fontWeight: 1000,
-            lineHeight: '1',
+            fontSize: '48px',
+            fontWeight: 900,
             color: '#FFFFFF',
-            textShadow: '0 0 30px #00D9B5',
-            margin: '0 0 40px 0',
+            lineHeight: 1.15,
           }}
         >
-          REFERRAL RULES
+          Referral Rules
         </h2>
 
         <p
+          className={styles.subtitle}
           style={{
-            fontSize: '60px',
-            fontWeight: 900,
-            lineHeight: '1.3',
+            fontSize: '26px',
+            fontWeight: 700,
             color: '#FFFFFF',
-            textShadow: '0 0 20px rgba(255,255,255,0.5)',
-            margin: 0,
+            lineHeight: 1.5,
           }}
         >
           Simple guidelines to keep the program fair for everyone
         </p>
       </motion.div>
 
-      {/* RULE CARDS */}
       <div className={styles.grid}>
         {referralRules.map((rule, i) => {
           const Icon = RULE_ICONS[i % RULE_ICONS.length];
@@ -184,48 +139,28 @@ function ReferralRules() {
               key={i}
               className={styles.card}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-                margin: '-50px',
-              }}
-              transition={{
-                duration: 0.45,
-                delay: i * 0.08,
-              }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.45, delay: i * 0.08 }}
               whileHover={{ y: -8 }}
-              style={{
-                border: '5px solid rgba(255, 255, 255, 0.7)',
-                background: 'rgba(255, 255, 255, 0.12)',
-              }}
             >
-              {/* HUGE ICON */}
               <div
                 className={styles.iconWrap}
                 style={{
-                  width: '100px',
-                  height: '100px',
-                  minWidth: '100px',
-                  minHeight: '100px',
+                  width: '52px',
+                  height: '52px',
                 }}
               >
-                <Icon size={70} strokeWidth={3} />
+                <Icon size={28} strokeWidth={2.5} />
               </div>
 
-              {/* HUGE RULE TEXT */}
               <p
                 className={styles.ruleText}
                 style={{
-                  fontSize: '80px',
-                  fontWeight: 1000,
-                  lineHeight: '1.25',
+                  fontSize: '24px',
+                  fontWeight: 700,
                   color: '#FFFFFF',
-                  textShadow: '0 0 15px rgba(255,255,255,0.4)',
-                  margin: 0,
-                  padding: 0,
+                  lineHeight: 1.6,
                 }}
               >
                 {rule}
