@@ -53,10 +53,38 @@ function CrossBadge() {
 }
 
 const FLOATING_BADGES = [
-  { type: 'check', top: '8%', left: '4%', size: 42, delay: 0.2, duration: 4.5 },
-  { type: 'cross', top: '12%', left: '92%', size: 38, delay: 0.5, duration: 5 },
-  { type: 'check', top: '55%', left: '96%', size: 34, delay: 0.4, duration: 4.8 },
-  { type: 'cross', top: '85%', left: '3%', size: 40, delay: 0.7, duration: 5.2 },
+  {
+    type: 'check',
+    top: '8%',
+    left: '4%',
+    size: 42,
+    delay: 0.2,
+    duration: 4.5,
+  },
+  {
+    type: 'cross',
+    top: '12%',
+    left: '92%',
+    size: 38,
+    delay: 0.5,
+    duration: 5,
+  },
+  {
+    type: 'check',
+    top: '55%',
+    left: '96%',
+    size: 34,
+    delay: 0.4,
+    duration: 4.8,
+  },
+  {
+    type: 'cross',
+    top: '85%',
+    left: '3%',
+    size: 40,
+    delay: 0.7,
+    duration: 5.2,
+  },
 ];
 
 function FloatingBadges() {
@@ -108,27 +136,9 @@ function ReferralRules() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h2
-          className={styles.title}
-          style={{
-            fontSize: '48px',
-            fontWeight: 900,
-            color: '#FFFFFF',
-            lineHeight: 1.15,
-          }}
-        >
-          Referral Rules
-        </h2>
+        <h2 className={styles.title}>Referral Rules</h2>
 
-        <p
-          className={styles.subtitle}
-          style={{
-            fontSize: '26px',
-            fontWeight: 700,
-            color: '#FFFFFF',
-            lineHeight: 1.5,
-          }}
-        >
+        <p className={styles.subtitle}>
           Simple guidelines to keep the program fair for everyone
         </p>
       </motion.div>
@@ -142,10 +152,7 @@ function ReferralRules() {
               key={i}
               className={styles.card}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{
                 once: true,
                 margin: '-50px',
@@ -156,27 +163,11 @@ function ReferralRules() {
               }}
               whileHover={{ y: -8 }}
             >
-              <div
-                className={styles.iconWrap}
-                style={{
-                  width: '52px',
-                  height: '52px',
-                }}
-              >
-                <Icon size={28} strokeWidth={2.5} />
+              <div className={styles.iconWrap}>
+                <Icon size={20} />
               </div>
 
-              <p
-                className={styles.ruleText}
-                style={{
-                  fontSize: '24px',
-                  fontWeight: 700,
-                  color: '#FFFFFF',
-                  lineHeight: 1.6,
-                }}
-              >
-                {rule}
-              </p>
+              <p className={styles.ruleText}>{rule}</p>
             </motion.div>
           );
         })}

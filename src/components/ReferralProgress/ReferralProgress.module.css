@@ -6,7 +6,7 @@
   border-radius: var(--radius-xl);
   padding: var(--space-lg) var(--space-xl);
   box-shadow: 0 20px 60px rgba(30, 20, 60, 0.35);
-  overflow: hidden;;
+  overflow: hidden;
   margin: var(--space-lg) 0;
 }
 
@@ -63,26 +63,32 @@
   color: #fff;
 }
 
+/* Next Milestone */
 .title {
-  font-size: 1.1rem;
-  color: var(--text-dark-primary);
-  margin-bottom: 2px;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 5px;
 }
 
+/* 3 more Ad Watch tasks... */
 .subtitle {
-  font-size: var(--fs-small);
-  color: var(--text-dark-secondary);
+  font-size: 18px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .rewardChip {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
+  padding: 9px 16px;
   border-radius: var(--radius-pill);
   background: rgba(255, 176, 32, 0.14);
   color: var(--accent-amber);
-  font-size: var(--fs-small);
+  font-size: 18px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -122,21 +128,26 @@
   justify-content: space-between;
 }
 
+/* 12 / 15 Ad Watch tasks */
 .countLabel {
-  font-size: var(--fs-small);
-  color: var(--text-dark-secondary);
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .countLabel strong {
-  color: var(--text-dark-primary);
-  font-size: var(--fs-body-lg);
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
 }
 
+/* 80% */
 .percentLabel {
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: 800;
   color: var(--accent-teal);
-  font-size: var(--fs-body-lg);
+  font-size: 24px;
 }
 
 @media (max-width: 600px) {
@@ -150,8 +161,29 @@
     padding-right: 0;
   }
 
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 17px;
+  }
+
   .rewardChip {
     align-self: flex-start;
+    font-size: 17px;
+  }
+
+  .countLabel {
+    font-size: 17px;
+  }
+
+  .countLabel strong {
+    font-size: 22px;
+  }
+
+  .percentLabel {
+    font-size: 22px;
   }
 
   .megaphoneWrap {

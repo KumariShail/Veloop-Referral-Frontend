@@ -4,7 +4,7 @@
   background: linear-gradient(155deg, #0f1f1c 0%, #142822 100%);
   border: 1px solid rgba(0, 217, 181, 0.15);
   border-radius: var(--radius-xl);
-  padding: 48px 36px;
+  padding: var(--space-2xl) var(--space-lg);
   box-shadow: 0 20px 60px rgba(10, 20, 18, 0.35);
   overflow: hidden;
   margin: var(--space-lg) 0;
@@ -36,24 +36,24 @@
   position: relative;
   z-index: 1;
   text-align: center;
-  margin-bottom: 42px;
+  margin-bottom: var(--space-xl);
 }
 
-/* HUGE TITLE */
+/* Normal section title */
 .title {
-  font-size: 64px !important;
-  line-height: 1.1 !important;
-  font-weight: 900 !important;
-  color: #ffffff !important;
-  margin-bottom: 18px;
+  font-size: 36px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
 }
 
-/* HUGE SUBTITLE */
+/* Normal subtitle */
 .subtitle {
-  font-size: 32px !important;
-  line-height: 1.5 !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .grid {
@@ -61,17 +61,17 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  gap: var(--space-md);
 }
 
 .card {
   display: flex;
   align-items: flex-start;
-  gap: 24px;
-  padding: 30px 28px;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   cursor: default;
   transition:
     background var(--transition-base),
@@ -80,25 +80,25 @@
 }
 
 .card:hover {
-  background: rgba(255, 255, 255, 0.10);
-  border-color: rgba(139, 124, 246, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(139, 124, 246, 0.35);
   box-shadow: 0 12px 28px rgba(108, 92, 231, 0.25);
 }
 
 .card:active {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(139, 124, 246, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 124, 246, 0.4);
 }
 
 .iconWrap {
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(108, 92, 231, 0.20);
+  background: rgba(108, 92, 231, 0.15);
   color: var(--accent-indigo-light);
   transition:
     background var(--transition-base),
@@ -110,84 +110,66 @@
   color: #fff;
 }
 
-/* VERY LARGE RULE TEXT */
 .ruleText {
-  font-size: 32px !important;
-  line-height: 1.7 !important;
-  font-weight: 800 !important;
-  color: #ffffff !important;
+  font-size: 17px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
   padding-top: 4px;
 }
 
-/* TABLET */
 @media (max-width: 700px) {
   .grid {
     grid-template-columns: 1fr;
   }
 
   .title {
-    font-size: 56px !important;
+    font-size: 32px;
   }
 
   .subtitle {
-    font-size: 30px !important;
+    font-size: 17px;
   }
 
   .ruleText {
-    font-size: 30px !important;
+    font-size: 16px;
   }
 }
 
-/* PHONE */
 @media (max-width: 480px) {
   .panel {
-    padding: 38px 22px;
+    padding: var(--space-lg) var(--space-md);
   }
 
-  .header {
-    margin-bottom: 32px;
-  }
-
-  /* BIG PHONE TITLE */
   .title {
-    font-size: 52px !important;
-    line-height: 1.1 !important;
+    font-size: 30px;
   }
 
-  /* BIG PHONE SUBTITLE */
   .subtitle {
-    font-size: 28px !important;
-    line-height: 1.5 !important;
-  }
-
-  .grid {
-    gap: 20px;
-  }
-
-  .card {
-    padding: 24px 20px;
-    gap: 18px;
-  }
-
-  .iconWrap {
-    width: 48px;
-    height: 48px;
-  }
-
-  /* DO NOT LET MOBILE SHRINK THE TEXT */
-  .ruleText {
-    font-size: 28px !important;
-    line-height: 1.7 !important;
-    font-weight: 800 !important;
-    color: #ffffff !important;
+    font-size: 16px;
   }
 
   .badgeLayer {
     display: none;
   }
 
+  .card {
+    padding: var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .iconWrap {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ruleText {
+    font-size: 15px;
+    padding-top: 3px;
+  }
+
   .floatBadge {
     opacity: 0.08;
-    transform: scale(0.7);
+    transform: scale(0.55);
   }
 }
