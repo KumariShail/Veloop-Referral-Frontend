@@ -68,8 +68,31 @@ function ReferralRules() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className={styles.title}>Referral Rules</h2>
-        <p className={styles.subtitle}>Simple guidelines to keep the program fair for everyone</p>
+      <h2
+        className={styles.title}
+        style={{
+          fontSize: '800px',
+          fontWeight: 900,
+          color: '#FFFFFF',
+          lineHeight: 1.1,
+          textShadow: '0 2px 12px rgba(0,0,0,0.8)',
+        }}
+      >
+        Referral Rules
+      </h2>
+
+      <p
+        className={styles.subtitle}
+        style={{
+          fontSize: '800px',
+          fontWeight: 800,
+          color: '#FFFFFF',
+          lineHeight: 1.5,
+          textShadow: '0 2px 10px rgba(0,0,0,0.8)',
+        }}
+      >
+        Simple guidelines to keep the program fair for everyone
+      </p>
       </motion.div>
 
       <div className={styles.grid}>
@@ -88,7 +111,18 @@ function ReferralRules() {
               <div className={styles.iconWrap}>
                 <Icon size={20} />
               </div>
-              <p className={styles.ruleText}>{rule}</p>
+              <p
+              className={styles.ruleText}
+              style={{
+                fontSize: '800px',
+                fontWeight: 800,
+                color: '#FFFFFF',
+                lineHeight: 1.7,
+                textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+              }}
+            >
+              {rule}
+            </p>
             </motion.div>
           );
         })}
