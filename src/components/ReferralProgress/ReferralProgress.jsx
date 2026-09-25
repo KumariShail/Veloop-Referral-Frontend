@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Target, Megaphone } from 'lucide-react';
-import { getMyReferralData } from '../../utils/api';
+import { getMyReferralData ,getReferralEligibility} from '../../utils/api';
 import styles from './ReferralProgress.module.css';
 import CoinScatterBackground from '../common/CoinScatterBackground';
 
@@ -15,7 +15,43 @@ function ReferralProgress() {
       try {
         const data = await getMyReferralData();
 
-        setProgress(data.referralProgress);
+      const referralId = data.referrals?.[0]?.id;
+
+      if (!referralId) {
+        setProgress({
+        empty:true,
+        });
+        return;
+      }
+
+      const eligibility = await getReferralEligibility(referralId);
+
+      const nextMilestone = eligibility.nextMilestone;
+
+      if (!nextMilestone) {
+        setProgress({
+          current: eligibility.adsCompleted,
+          target: eligibility.adsCompleted,
+          remaining: 0,
+          percent: 100,
+          nextReward: "All milestones reached",
+        });
+        return;
+      }
+
+      const current = eligibility.adsCompleted;
+      const target = nextMilestone.milestone;
+
+      setProgress({
+        current,
+        target,
+        remaining: nextMilestone.remainingAds,
+        percent: Math.min(
+          100,
+          Math.round((current / target) * 100)
+        ),
+        nextReward: `${nextMilestone.rewardAmount} ${nextMilestone.rewardType}`,
+      });
       } catch (err) {
         console.error(err);
         setError('Unable to load referral progress');
@@ -43,13 +79,19 @@ function ReferralProgress() {
     );
   }
 
-  if (!progress) {
-    return (
-      <div className={styles.panel}>
-        Referral progress is not available.
-      </div>
-    );
-  }
+  if (progress?.empty) {
+  return (
+    <div className={styles.panel}>
+      <h3 className={styles.title}>
+        Start Your Referral Journey
+      </h3>
+
+      <p className={styles.subtitle}>
+        Invite a friend to start earning referral rewards.
+      </p>
+    </div>
+  );
+}
 
   const current = progress.current;
   const target = progress.target;

@@ -19,7 +19,7 @@ function ReferralCard() {
         const data = await getMyReferralData();
 
         setReferralInfo({
-          code: data.referralCode,
+          code: data.user.referralCode,
           link: data.referralLink,
         });
       } catch (err) {

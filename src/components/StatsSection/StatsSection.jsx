@@ -122,17 +122,17 @@ function StatsSection() {
           {
             id: 'total',
             label: 'Total Referrals',
-            value: data.totalReferrals,
+            value: data.statistics.totalReferrals,
           },
           {
             id: 'success',
             label: 'Successful Referrals',
-            value: data.successfulReferrals,
+            value: data.statistics.successfulReferrals,
           },
           {
             id: 'pending',
             label: 'Pending Referrals',
-            value: data.pendingReferrals,
+            value: data.statistics.pendingReferrals,
           },
         ]);
       } catch (err) {

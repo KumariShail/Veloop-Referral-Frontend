@@ -125,18 +125,26 @@ function RewardsSection() {
 
   useEffect(() => {
     async function loadRewards() {
-      try {
-        const data = await getMyReferralData();
+    try {
+      const data = await getMyReferralData();
 
-        setRewards(data.rewards || []);
-        setCurrent(data.referralProgress?.current || 0);
-      } catch (err) {
-        console.error(err);
-        setError('Unable to load referral rewards');
-      } finally {
-        setLoading(false);
-      }
+      const formattedRewards = (data.rewards || []).map((reward) => ({
+        ...reward,
+        requiredTasks: Number(reward.milestone) || 0,
+        title: `${reward.rewardAmount} ${reward.rewardType}`,
+        subtitle: `Complete ${reward.milestone} Ad Watch tasks`,
+        condition: `Reach ${reward.milestone} completed Ad Watch tasks`,
+      }));
+
+      setRewards(formattedRewards);
+      setCurrent(Number(data.referralProgress?.current) || 0);
+    } catch (err) {
+      console.error(err);
+      setError('Unable to load referral rewards');
+    } finally {
+      setLoading(false);
     }
+  }
 
     loadRewards();
   }, []);
